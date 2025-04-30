@@ -2,17 +2,17 @@
 {
     public class ProductSeller
     {
-        public ProductSeller(int productId, Product product, int sellerId, Seller seller, decimal price, int stockQuantity, string sku)
+        public ProductSeller(int id, int productId, int sellerId, decimal price, int stockQuantity, string sku)
         {
+            Id = id;
             ProductId = productId;
-            Product = product;
             SellerId = sellerId;
-            Seller = seller;
             Price = price;
             StockQuantity = stockQuantity;
             Sku = sku;
         }
 
+        public int Id { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
         public int SellerId { get; set; }

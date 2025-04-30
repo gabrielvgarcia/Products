@@ -2,11 +2,10 @@
 {
     public class Seller
     {
-        public Seller(int id, string name, ICollection<ProductSeller> productSellers)
+        public Seller(int id, string name)
         {
             Id = id;
             Name = name;
-            ProductSellers = productSellers;
         }
 
         public int Id { get; set; }
