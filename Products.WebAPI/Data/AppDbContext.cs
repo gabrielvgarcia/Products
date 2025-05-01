@@ -7,6 +7,10 @@ namespace Products.API.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Seller> Seller { get; set; }
+        public DbSet<ProductSeller> ProductSeller { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
