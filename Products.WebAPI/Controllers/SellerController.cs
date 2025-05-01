@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Products.API.Data.Repository;
+using Products.API.DTO;
 using Products.API.Models;
 
 namespace Products.API.Controllers
@@ -9,16 +11,20 @@ namespace Products.API.Controllers
     public class SellerController : ControllerBase
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public SellerController(IRepository repository)
+        public SellerController(IRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var response = _repository.GetAllSellers();
+            var sellers = _repository.GetAllSellers();
+
+            var response = _mapper.Map<IEnumerable<SellerDTO>>(sellers);
 
             return Ok(response);
         }
@@ -26,30 +32,33 @@ namespace Products.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var response = _repository.GetSellerById(id);
+            var seller = _repository.GetSellerById(id);
+
+            var response = _mapper.Map<SellerDTO>(seller);
 
             return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Seller model)
+        public IActionResult Post([FromBody] RegisterSellerDTO model)
         {
-            _repository.Add(model);
+            var product = _mapper.Map<Seller>(model);
+
+            _repository.Add(product);
             _repository.Save();
 
             return Created();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Seller model)
+        public IActionResult Put(int id, [FromBody] RegisterSellerDTO model)
         {
             var seller = _repository.GetSellerById(id);
 
             if (seller == null)
                 return BadRequest();
 
-            seller.ProductSellers = model.ProductSellers;
-            seller.Name = model.Name;
+            _mapper.Map(model, seller);
 
             _repository.Update(seller);
 

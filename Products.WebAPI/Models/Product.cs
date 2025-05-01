@@ -2,6 +2,7 @@
 {
     public class Product
     {
+        public Product() { }
         public Product(int id, string name, string description)
         {
             Id = id;

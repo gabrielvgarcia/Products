@@ -2,6 +2,7 @@
 {
     public class Seller
     {
+        public Seller() { }
         public Seller(int id, string name)
         {
             Id = id;

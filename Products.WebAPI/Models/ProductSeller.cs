@@ -2,6 +2,7 @@
 {
     public class ProductSeller
     {
+        public ProductSeller() { }
         public ProductSeller(int id, int productId, int sellerId, decimal price, int stockQuantity, string sku)
         {
             Id = id;
