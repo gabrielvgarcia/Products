@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Products.API.Data.Repository;
+using Products.API.Models;
 
 namespace Products.API.Controllers
 {
@@ -6,31 +8,68 @@ namespace Products.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IRepository _repository;
+
+        public ProductController(IRepository repository)
         {
-            return new string[] { "value1", "value2" };
+            _repository = repository;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var response = _repository.GetAllProducts();
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var response = _repository.GetProductById(id);
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Product model)
         {
+            _repository.Add(model);
+            _repository.Save();
+
+            return Created();
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] Product model)
         {
+            var product = _repository.GetProductById(id);
+
+            if (product == null)
+                return BadRequest();
+
+            product.ProductSellers = model.ProductSellers;
+            product.Name = model.Name;
+
+            _repository.Update(product);
+
+            _repository.Save();
+
+            return Ok(model);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var product = _repository.GetProductById(id);
+
+            if (product == null)
+                return BadRequest();
+
+            _repository.Delete(product);
+            _repository.Save();
+
+            return Ok();
         }
     }
 }
