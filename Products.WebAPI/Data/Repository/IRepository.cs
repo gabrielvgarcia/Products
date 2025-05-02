@@ -12,5 +12,7 @@ namespace Products.API.Data.Repository
         Product GetProductById(int productId);
         Seller[] GetAllSellers();
         Seller GetSellerById(int sellerId);
+        ProductSeller[] GetAllProductsSellers();
+        ProductSeller GetProductSellerById(int productSellerId);
     }
 }

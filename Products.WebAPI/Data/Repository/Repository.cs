@@ -63,7 +63,6 @@ namespace Products.API.Data.Repository
             return [.. sellersQuery];
         }
 
-
         public Seller GetSellerById(int sellerId)
         {
             IQueryable<Seller> sellersQuery = _dbContext.Seller;
@@ -71,6 +70,27 @@ namespace Products.API.Data.Repository
             sellersQuery = sellersQuery.Include(s => s.ProductSellers).ThenInclude(s => s.Product).AsNoTracking().OrderBy(a => a.Id);
 
             return sellersQuery.FirstOrDefault(s => s.Id == sellerId);
+        }
+
+        public ProductSeller[] GetAllProductsSellers()
+        {
+            IQueryable<ProductSeller> productSellerQuery = _dbContext.ProductSeller;
+
+            productSellerQuery = productSellerQuery.Include(ps => ps.Seller)
+                                       .Include(ps => ps.Product)
+                                       .AsNoTracking()
+                                       .OrderBy(ps => ps.Id);
+
+            return [.. productSellerQuery];
+        }
+
+        public ProductSeller GetProductSellerById(int productSellerId)
+        {
+            IQueryable<ProductSeller> productSellerQuery = _dbContext.ProductSeller;
+
+            productSellerQuery = productSellerQuery.Include(ps => ps.Seller).Include(ps => ps.Product).AsNoTracking().OrderBy(ps => ps.Id);
+
+            return productSellerQuery.FirstOrDefault(s => s.Id == productSellerId);
         }
     }
 }
