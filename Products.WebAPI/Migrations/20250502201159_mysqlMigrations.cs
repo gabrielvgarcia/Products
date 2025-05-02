@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,49 +8,58 @@
 namespace Products.API.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigrations : Migration
+    public partial class mysqlMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Seller",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Seller", x => x.Id);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "ProductSeller",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SellerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    SellerId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    StockQuantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    Sku = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    Sku = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -66,7 +76,8 @@ namespace Products.API.Migrations
                         principalTable: "Seller",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
                 table: "Product",
@@ -94,12 +105,12 @@ namespace Products.API.Migrations
                 columns: new[] { "Id", "Price", "ProductId", "SellerId", "Sku", "StockQuantity" },
                 values: new object[,]
                 {
-                    { 1, 1599.00m, 1, 1, "152c048a-8f53-45fb-b080-891bf012d9b7", 10 },
-                    { 2, 3499.00m, 1, 2, "32ea5a56-e466-455c-97f3-4847aac56aa5", 5 },
-                    { 3, 3999.00m, 1, 1, "bb216151-4fba-4fb2-b99e-d7c2f2b43646", 20 },
-                    { 4, 3999.00m, 2, 3, "cbd9b9d2-2351-4c22-ab08-dd1d8548e0a0", 20 },
-                    { 5, 3999.00m, 3, 2, "8509dea8-7067-4243-afb2-6135358a0487", 20 },
-                    { 6, 3999.00m, 4, 3, "0d11bac6-be52-4046-8607-be9eba10d97c", 20 }
+                    { 1, 1599.00m, 1, 1, "faaef8a4-dc31-49a2-b8d8-3f8bb8134e10", 10 },
+                    { 2, 3499.00m, 1, 2, "e58acd35-422c-4048-afcb-437eb12c73fb", 5 },
+                    { 3, 3999.00m, 1, 1, "347e9fcf-57fd-4e06-bffb-4a06901b8e46", 20 },
+                    { 4, 3999.00m, 2, 3, "e0973591-e5e0-475a-b50b-3326bb3088b9", 20 },
+                    { 5, 3999.00m, 3, 2, "a7479672-91ba-4c3f-ba49-31d1932f1c6d", 20 },
+                    { 6, 3999.00m, 4, 3, "37d2055f-6839-467c-8b6e-a740ad081019", 20 }
                 });
 
             migrationBuilder.CreateIndex(

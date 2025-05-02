@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: "mysql:8.0"
+    container_name: mysql-productsdb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: productsdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - productsdb:/var/lib/mysql
+    networks:
+      - ProductsMysqlNet
+
+  productsapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: productsapi
+    environment:
+      - DBHOST=mysql
+    ports:
+      - "5000:8080"
+    depends_on:
+      - mysql
+    networks:
+      - ProductsNet
+      - ProductsMysqlNet
+
+volumes:
+  productsdb:
+
+networks:
+  ProductsNet:
+  ProductsMysqlNet:
