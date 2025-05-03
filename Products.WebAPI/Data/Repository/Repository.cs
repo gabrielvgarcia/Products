@@ -31,7 +31,7 @@ namespace Products.API.Data.Repository
             _dbContext.Update(entity);
         }
 
-        public Product[] GetAllProducts()
+        public async Task<Product[]> GetAllProducts()
         {
             IQueryable<Product> productsQuery = _dbContext.Product;
 
@@ -40,18 +40,18 @@ namespace Products.API.Data.Repository
                                          .AsNoTracking()
                                          .OrderBy(p => p.Id);
 
-            return [.. productsQuery];
+            return await productsQuery.ToArrayAsync();
         }
-        public Product GetProductById(int productId)
+        public async Task<Product> GetProductById(int productId)
         {
             IQueryable<Product> productsQuery = _dbContext.Product;
 
             productsQuery = productsQuery.Include(p => p.ProductSellers).ThenInclude(p => p.Seller).AsNoTracking().OrderBy(a => a.Id);
 
-            return productsQuery.FirstOrDefault(p => p.Id == productId);
+            return await productsQuery.FirstOrDefaultAsync(p => p.Id == productId);
         }
 
-        public Seller[] GetAllSellers()
+        public async Task<Seller[]> GetAllSellers()
         {
             IQueryable<Seller> sellersQuery = _dbContext.Seller;
 
@@ -60,19 +60,19 @@ namespace Products.API.Data.Repository
                                        .AsNoTracking()
                                        .OrderBy(s => s.Id);
 
-            return [.. sellersQuery];
+            return await sellersQuery.ToArrayAsync();
         }
 
-        public Seller GetSellerById(int sellerId)
+        public async Task<Seller> GetSellerById(int sellerId)
         {
             IQueryable<Seller> sellersQuery = _dbContext.Seller;
 
             sellersQuery = sellersQuery.Include(s => s.ProductSellers).ThenInclude(s => s.Product).AsNoTracking().OrderBy(a => a.Id);
 
-            return sellersQuery.FirstOrDefault(s => s.Id == sellerId);
+            return await sellersQuery.FirstOrDefaultAsync(s => s.Id == sellerId);
         }
 
-        public ProductSeller[] GetAllProductsSellers()
+        public async Task<ProductSeller[]> GetAllProductsSellers()
         {
             IQueryable<ProductSeller> productSellerQuery = _dbContext.ProductSeller;
 
@@ -81,16 +81,16 @@ namespace Products.API.Data.Repository
                                        .AsNoTracking()
                                        .OrderBy(ps => ps.Id);
 
-            return [.. productSellerQuery];
+            return await productSellerQuery.ToArrayAsync();
         }
 
-        public ProductSeller GetProductSellerById(int productSellerId)
+        public async Task<ProductSeller> GetProductSellerById(int productSellerId)
         {
             IQueryable<ProductSeller> productSellerQuery = _dbContext.ProductSeller;
 
             productSellerQuery = productSellerQuery.Include(ps => ps.Seller).Include(ps => ps.Product).AsNoTracking().OrderBy(ps => ps.Id);
 
-            return productSellerQuery.FirstOrDefault(s => s.Id == productSellerId);
+            return await productSellerQuery.FirstOrDefaultAsync(s => s.Id == productSellerId);
         }
     }
 }

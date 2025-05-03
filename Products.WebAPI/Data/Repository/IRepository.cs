@@ -8,11 +8,11 @@ namespace Products.API.Data.Repository
         void Update<T>(T model) where T : class;
         void Delete<T>(T model) where T : class;
         bool Save();
-        Product[] GetAllProducts();
-        Product GetProductById(int productId);
-        Seller[] GetAllSellers();
-        Seller GetSellerById(int sellerId);
-        ProductSeller[] GetAllProductsSellers();
-        ProductSeller GetProductSellerById(int productSellerId);
+        Task<Product[]> GetAllProducts();
+        Task<Product> GetProductById(int productId);
+        Task<Seller[]> GetAllSellers();
+        Task<Seller> GetSellerById(int sellerId);
+        Task<ProductSeller[]> GetAllProductsSellers();
+        Task<ProductSeller> GetProductSellerById(int productSellerId);
     }
 }

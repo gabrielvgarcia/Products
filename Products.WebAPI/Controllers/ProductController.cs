@@ -20,9 +20,9 @@ namespace Products.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var products = _repository.GetAllProducts();
+            var products = await _repository.GetAllProducts();
 
             var response = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
@@ -30,9 +30,9 @@ namespace Products.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var product = _repository.GetProductById(id);
+            var product = await _repository.GetProductById(id);
 
             var response = _mapper.Map<ProductDTO>(product);
 
